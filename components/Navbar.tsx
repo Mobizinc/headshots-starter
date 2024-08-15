@@ -14,6 +14,7 @@ import { Button } from "./ui/button";
 import React from "react";
 import { Database } from "@/types/supabase";
 import ClientSideCredits from "./realtime/ClientSideCredits";
+import Image from "next/image";
 
 export const dynamic = "force-dynamic";
 
@@ -36,7 +37,8 @@ export default async function Navbar() {
     <div className="flex w-full px-4 lg:px-40 py-4 items-center border-b text-center gap-8 justify-between">
       <div className="flex gap-2 h-full">
         <Link href="/">
-          <h2 className="font-bold">Headshots AI</h2>
+          {/*<h2 className="font-bold">Headshots AI</h2>*/}
+          <Image src={"/logo-xl.png"} alt={"Mobiz Logo"} width={100} height={100}/>
         </Link>
       </div>
       {user && (

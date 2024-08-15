@@ -1,0 +1,49 @@
+name: DEV-Mobiz-Headshots-AI
+
+on:
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: ${{ vars.AZURE_WEBAPP_NAME }} # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: "." # set this to the path to your web app project, defaults to the repository root
+  NODE_VERSION: ${{ vars.NODE_VERSION }} # set this to the node version to use
+  APP_WEBHOOK_SECRET: ${{ secrets.APP_WEBHOOK_SECRET }} # Moved to secrets
+  NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }} # Moved to secrets
+  SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+  SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+  SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }} # Moved to secrets
+  VERCEL_URL: ${{ vars.VERCEL_URL }}
+  ASTRIA_API_KEY: ${{ secrets.ASTRIA_API_KEY }} # Added as a secret
+  BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN }} # Added as a secret
+  SUPABASE_JWT_SECRET: ${{ secrets.SUPABASE_JWT_SECRET }} # Added as a secret
+  POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }} # Added as a secret
+  POSTGRES_URL_NON_POOLING: ${{ secrets.POSTGRES_URL_NON_POOLING }} # Added as a secret
+  POSTGRES_PRISMA_URL: ${{ secrets.POSTGRES_PRISMA_URL }} # Added as a secret
+  POSTGRES_URL: ${{ secrets.POSTGRES_URL }} # Added as a secret
+
+jobs:
+  build-and-deploy:
+    environment: Development
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: yarn install and build
+        run: |
+          # Build and test the project, then
+          # deploy to Azure Web App.
+          yarn install
+          yarn build
+        working-directory: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      - name: "Deploy to Azure WebApp"
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.WEBAPP_MOBIZ_HEADSHOTS_AI }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
