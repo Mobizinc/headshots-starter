@@ -20,7 +20,7 @@ env:
   POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }} # Added as a secret
   POSTGRES_URL_NON_POOLING: ${{ secrets.POSTGRES_URL_NON_POOLING }} # Added as a secret
   POSTGRES_PRISMA_URL: ${{ secrets.POSTGRES_PRISMA_URL }} # Added as a secret
-  POSTGRES_URL: ${{ secrets.POSTGRES_URL }} # Added as a secret
+  POSTGRES_URL: ${{ secrets.POSTGRES_URL }} 
 
 jobs:
   build-and-deploy:
